@@ -29,7 +29,7 @@ class ClassroomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Classroom
-        fields = ['Owner', 'uniqueCode', 'users']
+        fields = ['Owner', 'name','uniqueCode', 'users']
 
     def get_users(self, instance):
         querryset = UserClassRoomRelation.objects.filter(classroom=instance.id)
