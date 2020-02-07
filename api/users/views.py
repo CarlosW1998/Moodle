@@ -7,17 +7,17 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
 #app Imports
-from users.serializers import UserSerializer
+from users.serializers import NewUserSerializer
 # Create your views here.
 class AuthVeiwset(viewsets.GenericViewSet):
     permission_classes = [AllowAny]
-    serializer_class = UserSerializer
+    serializer_class = NewUserSerializer
     parser_classes = (FormParser, JSONParser, MultiPartParser)
     
     
     @action(methods=['post'], url_path='createuser', detail=False)
     def createuser(self, request):
-        serializer = UserSerializer(data=request.data)
+        serializer = NewUserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

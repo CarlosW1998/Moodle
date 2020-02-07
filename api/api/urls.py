@@ -23,6 +23,7 @@ from rest_framework_jwt.views import refresh_jwt_token
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api/', include('users.urls')),
+    url(r'^api/', include('classroom.urls')),
     url(r'^api/token/refresh/$', refresh_jwt_token),
     url(r'^api/token/$', obtain_jwt_token),
 ]
