@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from users.serializers import UserSerializer
 # Create your views here.
 class AuthVeiwset(viewsets.GenericViewSet):
-    #authentication_classes = (SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication)
+    permission_classes = [AllowAny]
     serializer_class = UserSerializer
     parser_classes = (FormParser, JSONParser, MultiPartParser)
     

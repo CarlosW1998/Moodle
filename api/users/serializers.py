@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username', 'first_name', 'last_name', 'email', 'password']
     
     def create(self, validated_date) :
-        user = super(UserSerilizer, self).create(validated_date)
+        user = super(UserSerializer, self).create(validated_date)
         user.set_password(validated_date['password'])
         user.save()
         return user
