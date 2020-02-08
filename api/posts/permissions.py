@@ -12,7 +12,7 @@ class IsOwner(permissions.BasePermission):
 
         if 'classroom' in data.keys():
             try:
-                classroom = Classroom.objects.get(pk=data['classroom'])
+                classroom = Classroom.objects.get(uniqueCode=data['classroom'])
                 return classroom.owner.id == request.user.id
             except: 
                 return True

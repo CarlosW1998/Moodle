@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 #App Imports
 from posts.permissions import IsOwner
 from posts.models import Post, File
+from classroom.models import Classroom
 from posts.serializers import NewFileSerializer, NewPostSerializer, \
     FileSerializer, PostSerializer
 
@@ -22,7 +23,11 @@ class PostsViewset(viewsets.GenericViewSet):
     def createPost(self, request):
         if not type(request.data) == dict:data = request.data.dict()
         else: data = request.data
-        serializer = PostSerializer(data=data)
+        try:
+            data['classroom'] = Classroom.objects.get(uniqueCode=data['classroom']).id
+        except:
+            return Response('Ivalid Classroom', status=status.HTTP_400_BAD_REQUEST)
+        serializer = NewPostSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             if 'files' in data.keys():
