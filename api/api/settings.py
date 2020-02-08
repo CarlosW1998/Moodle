@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'classroom',
-    'forum'
+    'forum',
+    'posts'
 ]
 JWT_AUTH = {
     
