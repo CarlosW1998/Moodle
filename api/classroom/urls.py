@@ -7,7 +7,7 @@ classroom = routers.SimpleRouter()
 classroom.register(
     r'classroom',
     ClassroomViewset,
-    base_name='Clients Auths'
+    base_name='Classroom operations'
 )
 
 urlpatterns = [

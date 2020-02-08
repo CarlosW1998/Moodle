@@ -6,9 +6,15 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.db import transaction
+
 #App Imports
+from forum.models import Forum
+from forum.serializers import NewForumSerializer
 from classroom.models import Classroom, UserClassRoomRelation
-from classroom.serializers import NewClassroomSerializer, ClassroomSerializer, UserClassRoomRelationSerializer, NewUserClassRoomRelationSerializer
+from classroom.serializers import NewClassroomSerializer, \
+     ClassroomSerializer, UserClassRoomRelationSerializer, \
+          NewUserClassRoomRelationSerializer
 
 
 class ClassroomViewset(viewsets.GenericViewSet):
@@ -18,11 +24,18 @@ class ClassroomViewset(viewsets.GenericViewSet):
 
 #    @action(methods=['post'], url_path='', detail=False)
     def create(self, request):
-        data = {'owner': request.user.pk, 'name': request.data['name']}
+        newF  = Forum(name='Test')
+        newF.save()
+        data = request.data.dict()
+        data['owner']  =request.user.pk
+        data['forum'] = newF.id
         serializer =NewClassroomSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
+            newF.name = serializer.data['name']
+            newF.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
+        newF.delete()
         return Response(serializer.errors,
             status=status.HTTP_400_BAD_REQUEST)
     
