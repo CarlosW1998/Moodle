@@ -20,7 +20,8 @@ class PostsViewset(viewsets.GenericViewSet):
 
     @action(methods=['post'], url_path='post', detail=False)
     def createPost(self, request):
-        data = request.data.dict()
+        if not type(request.data) == dict:data = request.data.dict()
+        else: data = request.data
         serializer = PostSerializer(data=data)
         if serializer.is_valid():
             serializer.save()

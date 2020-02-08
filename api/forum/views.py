@@ -19,7 +19,8 @@ class ForumViewset(viewsets.GenericViewSet):
     
     @action(methods=['post'], url_path='question', detail=False)
     def createQuestion(self, request):
-        data = request.data.dict()
+        if not type(request.data) == dict:data = request.data.dict()
+        else: data = request.data
         data['owner'] = request.user.id
         serializer = NewQuestionSerializer(data=data)
         if serializer.is_valid():
@@ -30,7 +31,8 @@ class ForumViewset(viewsets.GenericViewSet):
 
     @action(methods=['post'], url_path='comentary', detail=False)
     def createComentary(self, request):
-        data = request.data.dict()
+        if not type(request.data) == dict:data = request.data.dict()
+        else: data = request.data
         data['owner'] = request.user.id
         serializer = NewComentarySerializer(data=data)
         if serializer.is_valid():

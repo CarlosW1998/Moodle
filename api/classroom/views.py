@@ -26,8 +26,9 @@ class ClassroomViewset(viewsets.GenericViewSet):
     def create(self, request):
         newF  = Forum(name='Test')
         newF.save()
-        data = request.data.dict()
-        data['owner']  =request.user.pk
+        if not type(request.data) == dict:data = request.data.dict()
+        else: data = request.data
+        data['owner'] = request.user.pk
         data['forum'] = newF.id
         serializer =NewClassroomSerializer(data=data)
         if serializer.is_valid():

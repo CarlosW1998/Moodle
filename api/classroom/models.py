@@ -10,7 +10,7 @@ class Classroom(models.Model):
     
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     uniqueCode = models.CharField(max_length=50, default=generateUniqueCode)
-    name = models.CharField(max_length=50, default='class', unique=True)
+    name = models.CharField(max_length=50, default='class')
     forum = models.ForeignKey(Forum, on_delete=models.CASCADE, null=True, default=None)
     
 

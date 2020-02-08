@@ -7,7 +7,8 @@ class IsOwner(permissions.BasePermission):
             return False
         if request.method in ('GET'):
             return True
-        data = request.data.dict()
+        if not type(request.data) == dict:data = request.data.dict()
+        else: data = request.data
 
         if 'classroom' in data.keys():
             try:
