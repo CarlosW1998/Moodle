@@ -26,7 +26,9 @@ SECRET_KEY = 'e73jyr2ww9f(u)i3%eh#npx&dn2g-asgginj3zum77*ybb4=2b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Application definition
@@ -42,7 +44,8 @@ INSTALLED_APPS = [
     'users',
     'classroom',
     'forum',
-    'posts'
+    'posts',
+    'corsheaders',
 ]
 JWT_AUTH = {
     
@@ -57,6 +60,7 @@ JWT_AUTH = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
