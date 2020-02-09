@@ -1,4 +1,3 @@
-
 from rest_framework import serializers
 from classroom.models import Classroom, UserClassRoomRelation
 from django.contrib.auth.models import User
@@ -7,6 +6,8 @@ from rest_framework.validators import UniqueTogetherValidator
 from forum.serializers import ForumSerializer
 from posts.serializers import PostSerializer
 from posts.models import Post
+from activities.models import Activity
+from activities.serializers import ActivitySerializer
 
 class NewUserClassRoomRelationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,9 +31,10 @@ class ClassroomSerializer(serializers.ModelSerializer):
     users = serializers.SerializerMethodField()
     Forum = ForumSerializer(source='forum', read_only=True, many=False)
     posts = serializers.SerializerMethodField()
+    activities = serializers.SerializerMethodField()
     class Meta:
         model = Classroom
-        fields = ['Owner', 'Forum', 'name','uniqueCode', 'users', 'posts']
+        fields = ['Owner', 'Forum', 'name','uniqueCode', 'users', 'posts', 'activities']
 
     def get_users(self, instance):
         querryset = UserClassRoomRelation.objects.filter(classroom=instance.id)
@@ -43,6 +45,11 @@ class ClassroomSerializer(serializers.ModelSerializer):
     def get_posts(self, instance):
         querryset = Post.objects.filter(classroom=instance.id)
         serializers = PostSerializer(querryset, many=True)
+        return serializers.data
+    
+    def get_activities(self, instance):
+        querryset = Activity.objects.filter(classroom=instance.id)
+        serializers = ActivitySerializer(querryset, many =True)
         return serializers.data
 
 class NewClassroomSerializer(serializers.ModelSerializer):
