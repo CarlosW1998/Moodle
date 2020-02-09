@@ -15,7 +15,7 @@ class NewFileSerializer(serializers.ModelSerializer):
 class NewAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = [ 'id','activity', 'owner', 'score', 'postDate', 'comentary']
+        fields = [ 'id','activity', 'owner', 'postDate', 'comentary']
 
 class NewAnswerFileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,7 +37,7 @@ class AnswerSerializer(serializers.ModelSerializer):
     Owner = UserSerializer(source='owner', many=False, read_only=True)    
     files = serializers.SerializerMethodField()
     class Meta:
-        model = AnswerFile
+        model = Answer
         fields = [ 'id', 'score', 'postDate', 'comentary', 'Owner', 'files']
 
     def get_files(self, instance):
@@ -58,7 +58,7 @@ class ActivitySerializer(serializers.ModelSerializer):
         serializer = FileSerializer(querryset, many=True)
         return serializer.data
 
-    def get_answears(self, instance):
+    def get_answers(self, instance):
         querryset = Answer.objects.filter(activity=instance.id)
         serializer = AnswerSerializer(querryset, many=True)
         return serializer.data

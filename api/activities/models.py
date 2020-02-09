@@ -17,7 +17,7 @@ class File(models.Model):
 class Answer(models.Model):
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    score = models.FloatField()
+    score = models.FloatField(default=0)
     postDate = models.DateField(auto_now_add=True)
     comentary = models.CharField(max_length=100)
 

@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 #App Imports
 from posts.permissions import IsOwner
+from classroom.models import Classroom
 from activities.models import Activity, File, \
     Answer, AnswerFile
 from activities.serializers import NewActivitySerializer, NewAnswerFileSerializer, \
@@ -15,21 +16,22 @@ from activities.serializers import NewActivitySerializer, NewAnswerFileSerialize
     AnswerSerializer, ActivitySerializer
 
 class ActivityViewsets(viewsets.GenericViewSet):
-    permission_classes = [IsOwner]
+    permission_classes = [IsOwner, IsAuthenticated]
     querryset = Activity.objects.all()
     serializer_class = ActivitySerializer
     parser_classes = (FormParser, JSONParser, MultiPartParser)
 
-    @action(methods=['post'], url_path='activity', detail=False)
-    def createPost(self, request):
+    def create(self, request):
         if not type(request.data) == dict:data = request.data.dict()
         else: data = request.data
+        
         try:
+            print(Classroom.objects.get(uniqueCode=data['classroom']))
             data['classroom'] = Classroom.objects.get(uniqueCode=data['classroom']).id
         except:
             return Response('Ivalid Classroom', status=status.HTTP_400_BAD_REQUEST)
         serializer = NewActivitySerializer(data=data)
-        if serializer.is_valid:
+        if serializer.is_valid():
             serializer.save()
             if 'files' in data.keys():
                 for i in data['files']:
@@ -39,14 +41,31 @@ class ActivityViewsets(viewsets.GenericViewSet):
             
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(methods=['post'], url_path='setscore', detail=True)
+    def setscore(self, request, pk=None):
+        if pk == None:
+            return Response("Invalid Score", status=status.HTTP_400_BAD_REQUEST)    
+        answer = get_object_or_404(Answer, pk=pk)
+        try:
+            score = int(request.data['score'])
+            if score > 10 or score < 0:
+                raise Exception("Invalid Score")
+        except:
+            return Response("Invalid Score", status=status.HTTP_400_BAD_REQUEST)
+        answer.score = score
+        answer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        
+
+
 
 class AnswerViewset(viewsets.GenericViewSet):
     querryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     parser_classes = (FormParser, JSONParser, MultiPartParser)
 
-    @action(methods=['post'], url_path='answer', detail=False)
-    def createPost(self, request):
+    def create(self, request):
         if not type(request.data) == dict:data = request.data.dict()
         else: data = request.data
         try:
@@ -54,7 +73,7 @@ class AnswerViewset(viewsets.GenericViewSet):
         except:
             return Response('Ivalid User', status=status.HTTP_400_BAD_REQUEST)
         serializer = NewAnswerSerializer(data=data)
-        if serializer.is_valid:
+        if serializer.is_valid():
             serializer.save()
             if 'files' in data.keys():
                 for i in data['files']:

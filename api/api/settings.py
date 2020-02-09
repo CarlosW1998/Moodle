@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'classroom',
     'forum',
     'posts',
+    'activities',
     'corsheaders',
 ]
 JWT_AUTH = {

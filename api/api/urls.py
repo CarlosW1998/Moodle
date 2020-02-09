@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^api/', include('classroom.urls')),
     url(r'^api/', include('forum.urls')),
     url(r'^api/', include('posts.urls')),
+    url(r'^api/', include('activities.urls')),
     url(r'^api/token/refresh/$', refresh_jwt_token),
     url(r'^api/token/$', obtain_jwt_token),
 ]
