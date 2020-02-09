@@ -9,12 +9,12 @@ class NewPostSerializer(serializers.ModelSerializer):
 class NewFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
-        fields = ['id', 'post', 'binary']
+        fields = ['id', 'post', 'filename', 'binary']
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
-        fields = ['id', 'binary']
+        fields = ['id', 'filename', 'binary']
 
 class PostSerializer(serializers.ModelSerializer):
     files = serializers.SerializerMethodField()
