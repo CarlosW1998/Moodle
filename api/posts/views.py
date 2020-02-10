@@ -33,13 +33,14 @@ class PostsViewset(viewsets.GenericViewSet):
             savedfiles = []
             if 'files' in data.keys():
                 for i in data['files']:
+                    i['post']= serializer.data['id']
                     serializerFile = NewFileSerializer(data=i)
                     if serializerFile.is_valid():
                         serializerFile.save()
                         savedfiles.append(serializerFile.data)
                     else: savedfiles.append(serializerFile.errors)
-                responsedata = serializer.data
-                responsedata['files'] = savedfiles
+            responsedata = serializer.data
+            responsedata['files'] = savedfiles
             return Response(responsedata,status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
