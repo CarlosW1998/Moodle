@@ -10,5 +10,5 @@ class Post(models.Model):
 class File(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     filename = models.CharField(max_length=100)
-    binary = models.BinaryField(null=True, blank=True)
+    binary = models.TextField(null=True, blank=True)
 

@@ -35,6 +35,7 @@ class ActivityViewsets(viewsets.GenericViewSet):
             serializer.save()
             if 'files' in data.keys():
                 for i in data['files']:
+                    i['activity'] = serializer.data['id']
                     serializerFile = NewFileSerializer(data=i)
                     if serializerFile.is_valid():
                         serializerFile.save()
@@ -77,6 +78,7 @@ class AnswerViewset(viewsets.GenericViewSet):
             serializer.save()
             if 'files' in data.keys():
                 for i in data['files']:
+                    i['answer'] = serializer.data['id']
                     serializerFile = NewAnswerFileSerializer(data=i)
                     if serializerFile.is_valid():
                         serializerFile.save()

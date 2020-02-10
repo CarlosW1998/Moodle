@@ -12,7 +12,7 @@ class Activity(models.Model):
 class File(models.Model):
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
     filename = models.CharField(max_length=100)
-    binary = models.BinaryField(null=True, blank=True)
+    binary = models.TextField(null=True, blank=True)
 
 class Answer(models.Model):
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
@@ -24,4 +24,4 @@ class Answer(models.Model):
 class AnswerFile(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     filename = models.CharField(max_length=100)
-    binary = models.BinaryField(null=True, blank=True)
+    binary = models.TextField(null=True, blank=True)
